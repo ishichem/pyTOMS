@@ -1,4 +1,5 @@
 import numpy as np
+from typing import List
 
 
 class TAtom:
@@ -14,27 +15,21 @@ class TAtom:
     residueName = "" # residue name or monomer name
     residueNumber = 0 # residue number
     mass = 0.0
+    bondedType = "" # atom type for bonded interactions
+    nonbondedType = "" # atom type for non-bonded interaction
+    nonbondedId = "" # LAMMPS atom type id for non-bonded interaction
+    mapType = ""
+        # CG atom label to specify how to map all-atom geometry to CG one.
+        # The same label is used in the title section for mapping definition in VOTCA
+    subatomNumbers: List[int] = [] # constituting atoms for the CG atom
+    # subatoms = [] # all atom TAtom objects for the CG atom
+    mapWeight = 0. # the weight of the atom for CG geometry mapping
+    comment = "" # comment in [atoms] section
+    params: List[float] = [] # LJ parameters
+    particleType = "" # particle type in GROMACS. "A" for atoms.
 
-        self.atmno=0
-        self.element="" # element name C, SI, O, C, C, ...
-        self.atmname="" # atom name C, Si, O, C, C, ...  not include numbering
-        self.atmlb="" # atom lable C, Si, O, C1, C2, ... includes numbering: see TMol.labelatm()
-        self.xyz=[0.0,0.0,0.0] # in Angstrome
-        self.xyzs=[] # trajectory [ [xyz], [xyz], ... ]
-        self.v=[0.0,0.0,0.0] # nm/ps
-        self.vs=[] # trajectory nm/ps
-        self.mol2typ=""
-        self.cg=0.0
-        self.cgno=0 # charge group number
-        self.resname=""
-        self.resno=0
-        self.mass=0.0
-        self.bondedtyp=""
-        self.nonbondedtyp=""
-        self.nbtypid=0
-        self.maptyp=""
-        self.subatms=[]
-        self.cgweight=0 # the weight in CG mapping
-        self.comment=""
-        self.params=[]
-        self.ptyp=""
+    def __init__():
+        return
+    
+
+
