@@ -1,5 +1,6 @@
 import numpy as np
 from typing import List
+from .TNonbondedFF import TNonbondedFF
 
 
 class TAtom:
@@ -31,5 +32,7 @@ class TAtom:
     def __init__():
         return
     
+    def toNonbondedFF() -> TNonbondedFF:
+        return
 
 
