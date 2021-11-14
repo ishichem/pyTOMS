@@ -1,6 +1,6 @@
 import numpy as np
 from typing import List
-from .TNonbondedFF import TNonbondedFF
+from .TAtomType import TAtomType
 
 
 class TAtom:
@@ -29,10 +29,10 @@ class TAtom:
     params: List[float] = [] # LJ parameters
     particleType = "" # particle type in GROMACS. "A" for atoms.
 
-    def __init__():
+    def __init__(self) -> None:
         return
     
-    def toNonbondedFF() -> TNonbondedFF:
+    def toAtomType(self) -> TAtomType:
         return
 
 
