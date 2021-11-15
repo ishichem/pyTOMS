@@ -18,7 +18,7 @@ class TAtom:
     mass = 0.0
     bondedType = "" # atom type for bonded interactions
     nonbondedType = "" # atom type for non-bonded interaction
-    nonbondedId = "" # LAMMPS atom type id for non-bonded interaction
+    nonbondedId = 0 # LAMMPS atom type id for non-bonded interaction
     mapType = ""
         # CG atom label to specify how to map all-atom geometry to CG one.
         # The same label is used in the title section for mapping definition in VOTCA
@@ -33,6 +33,14 @@ class TAtom:
         return
     
     def toAtomType(self) -> TAtomType:
-        return
+        atomType = TAtomType()
+        atomType.nonbondedType = self.nonbondedType
+        atomType.bondedType = self.bondedType
+        atomType.mass = self.mass
+        atomType.charge = self.charge
+        atomType.particleType = self.particleType
+        atomType.params = self.params[:]
+        atomType.nonbondedId = self.nonbondedId
+        return atomType
 
 
