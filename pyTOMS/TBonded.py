@@ -9,7 +9,6 @@ class TBonded:
     params: List[float] = [] # bonded interaction parameters e.g. [k, r_eq]
     # mol2Type = "1" # TRIPOS mol2 bond order
     comment = "" # comment line in [bond], [angle] or [dihedral] section
-    ifAssigned = False # whether a forcefield is assigned
     ffId = 0 # force field id in LAMMPS
     iaName = "" # interaction name: bond, angle, dihedral, etc
 
@@ -35,14 +34,38 @@ class TBonded:
     def assignFF(self, bondedTypes: List[TBondedType], assignWarn = False, overWrite = False) -> None:
         ffs = [bondedType for bondedType in bondedTypes if bondedType.iaName == self.iaName]
         assert len(self.atoms) > 2
-        atmtyps = [ atom.bondedType for atom in self.atoms]
+        atypes = [ atom.bondedType for atom in self.atoms]
+        atypesList = [atypes, list(reversed(atypes))]
+        ifAssign = False
         for ff in ffs:
             if len(ff.bondedTypes) < 2:
                 continue
-            for atmtyp in atmtyps:
-                if atmtyp[1] == ff.bondedTypes[1]:
+            for atypes in atypesList:
+                if atypes[1] == ff.bondedTypes[1]:
                     flag = 0
-                    
+                    for atype, btype in zip(atypes, ff.bondedTypes):
+                        if atype == btype or btype == "X":
+                            flag += 1
+                    if flag == len(atypes):
+                        if self.funcType != 0 or self.params != []:
+                            if assignWarn == True:
+                                print("Forcefield already assigned!")
+                                print(f"{[typ for typ in ff.bondedTypes]}")
+                                print(f"<< {self.funcType} {self.params}")
+                                print(f">> {ff.funcType} {ff.params}")
+                            if overWrite == False:
+                                continue
+                        #-- assign parameters
+                        self.funcType = ff.funcType
+                        self.params = ff.params[:]
+                        self.ffId = ff.ffId
+                        ifAssign = True
+            if ifAssign == True:
+                break
+        if ifAssign == False and assignWarn == True:
+            print(f"{[atype for atype in atypes]} not found in FFs!")
+        return
+
 
 
     
