@@ -1,4 +1,0 @@
-from .TAtom import TAtom
-
-
-

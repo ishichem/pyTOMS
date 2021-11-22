@@ -2,6 +2,7 @@
 from .TAtom import TAtom
 from .TBondedType import TBondedType
 from typing import List
+from .utils import warn
 
 class TBonded:
     atoms: List[TAtom] = []
@@ -49,10 +50,10 @@ class TBonded:
                     if flag == len(atypes):
                         if self.funcType != 0 or self.params != []:
                             if assignWarn == True:
-                                print("Forcefield already assigned!")
-                                print(f"{[typ for typ in ff.bondedTypes]}")
-                                print(f"<< {self.funcType} {self.params}")
-                                print(f">> {ff.funcType} {ff.params}")
+                                warn("Forcefield already assigned!")
+                                warn(f"{[typ for typ in ff.bondedTypes]}")
+                                warn(f"<< {self.funcType} {self.params}")
+                                warn(f">> {ff.funcType} {ff.params}")
                             if overWrite == False:
                                 continue
                         #-- assign parameters
@@ -63,7 +64,7 @@ class TBonded:
             if ifAssign == True:
                 break
         if ifAssign == False and assignWarn == True:
-            print(f"{[atype for atype in atypes]} not found in FFs!")
+            warn(f"{[atype for atype in atypes]} not found in FFs!")
         return
 
 

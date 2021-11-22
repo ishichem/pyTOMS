@@ -1,6 +1,5 @@
 from typing import List
 
-
 class TBondedType():
     #-- class for [bondtypes], [angletypes], etc
     iaName = "" # interaction name, e.g. bond, angle, etc
