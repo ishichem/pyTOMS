@@ -7,4 +7,3 @@ from .TAngle import TAngle
 from .TDihedral import TDihedral
 from .TPair import TPair
 from .utils import *
-from .Iterator import Iterator

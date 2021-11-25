@@ -1,7 +1,7 @@
 import numpy as np
 from typing import List
 from .TAtomType import TAtomType
-
+# from .mass import element2mass
 
 class TAtom:
     atomNumber = 0
@@ -42,5 +42,4 @@ class TAtom:
         atomType.params = self.params[:]
         atomType.nonbondedId = self.nonbondedId
         return atomType
-
 
