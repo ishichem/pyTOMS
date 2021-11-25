@@ -16,7 +16,7 @@ class TBonded:
     def __init__(self) -> None:
         return
     
-    def get_atomNumbers(self) -> List[int]:
+    def getAtomNumbers(self) -> List[int]:
         return [atom.atomNumber for atom in self.atoms]
     
     def toBondedType(self) -> TBondedType:
@@ -28,9 +28,6 @@ class TBonded:
         bondedType.comment = self.comment
         bondedType.ffId = self.ffId
         return bondedType
-    
-    def getAtomNumbers(self) -> List[int]:
-        return [atom.atomNumber for atom in self.atoms]
     
     def assignFF(self, bondedTypes: List[TBondedType], assignWarn = False, overWrite = False) -> None:
         ffs = [bondedType for bondedType in bondedTypes if bondedType.iaName == self.iaName]
