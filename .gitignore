@@ -5,3 +5,4 @@
 /tests/
 /build/
 .pytest_cache
+*cache*
