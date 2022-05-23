@@ -6,7 +6,7 @@ from .utils import warn
 
 class TBonded:
     atoms: List[TAtom] = []
-    funcType = 0 # gmx bonded function type
+    functionType = 0 # gmx bonded function type
     params: List[float] = [] # bonded interaction parameters e.g. [k, r_eq]
     # mol2Type = "1" # TRIPOS mol2 bond order
     comment = "" # comment line in [bond], [angle] or [dihedral] section
@@ -22,7 +22,7 @@ class TBonded:
     def toBondedType(self) -> TBondedType:
         bondedType = TBondedType()
         bondedType.bondedTypes = [atom.bondedType for atom in self.atoms]
-        bondedType.funcType = self.funcType
+        bondedType.functionType = self.functionType
         bondedType.params = self.params[:]
         bondedType.iaName = self.iaName
         bondedType.comment = self.comment
@@ -45,16 +45,16 @@ class TBonded:
                         if atype == btype or btype == "X":
                             flag += 1
                     if flag == len(atypes):
-                        if self.funcType != 0 or self.params != []:
+                        if self.functionType != 0 or self.params != []:
                             if assignWarn == True:
                                 warn("Forcefield already assigned!")
                                 warn(f"{[typ for typ in ff.bondedTypes]}")
-                                warn(f"<< {self.funcType} {self.params}")
-                                warn(f">> {ff.funcType} {ff.params}")
+                                warn(f"<< {self.functionType} {self.params}")
+                                warn(f">> {ff.functionType} {ff.params}")
                             if overWrite == False:
                                 continue
                         #-- assign parameters
-                        self.funcType = ff.funcType
+                        self.functionType = ff.functionType
                         self.params = ff.params[:]
                         self.ffId = ff.ffId
                         ifAssign = True

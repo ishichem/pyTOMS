@@ -32,8 +32,8 @@ def test_readMol2():
     #-- angles
     assert len(mol.angles) == 12
     #-- dihedrals
-    propers = [dih for dih in mol.dihedrals if dih.funcType == 1]
-    impropers = [dih for dih in mol.dihedrals if dih.funcType == 4]
+    propers = [dih for dih in mol.dihedrals if dih.functionType == 1]
+    impropers = [dih for dih in mol.dihedrals if dih.functionType == 4]
     assert len(propers) == 10
     assert len(impropers) == 2
     #-- pairs

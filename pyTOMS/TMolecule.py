@@ -37,6 +37,9 @@ class TMolecule:
         self.__atoms.append(atom)
         self.__nr2atom[atom.atomNumber] = atom
     
+    def natom(self) -> int:
+        return len(self.__atoms)
+    
     def atoms(self) -> Iterator[TAtom]:
         return iter(self.__atoms)
 
@@ -79,7 +82,7 @@ class TMolecule:
                     save.remove(j)
         for s in save:
             angle = TAngle()
-            angle.funcType = 1
+            angle.functionType = 1
             angle.atoms = [self.atomNumberToAtom(nr) for nr in iangs[s]]
             self.angles.append(angle)
         return
@@ -97,19 +100,19 @@ class TMolecule:
                         if ibonds[i][k] == ibonds[j][l] and i != j:
                             #--    ibonds[i][1-k]---ibonds[i][k]---ibonds[j][1-l]
                             for m in range(nbond):
-                                for n in range(nbond):
-                                    if (ibonds[i][1-k] == ibonds[m][n] and
+                                for h in range(2):
+                                    if (ibonds[i][1-k] == ibonds[m][h] and
                                         i != m and
-                                        ibonds[j][1-l] != ibonds[m][1-n]):
-                                        #--   ibonds[m][1-n]---ibonds[i][1-k]---ibonds[i][k]---ibonds[j][1-l]
-                                        idihs.append([ibonds[m][1-n], ibonds[i][1-k], ibonds[i][k], ibonds[j][1-l]])
+                                        ibonds[j][1-l] != ibonds[m][1-h]):
+                                        #--   ibonds[m][1-h]---ibonds[i][1-k]---ibonds[i][k]---ibonds[j][1-l]
+                                        idihs.append([ibonds[m][1-h], ibonds[i][1-k], ibonds[i][k], ibonds[j][1-l]])
         #-- remove duplications
         ndih = len(idihs)
         if ndih == 0:
             return
         save = list(range(ndih))
         for i in range(ndih-1):
-            for j in range(j+1, ndih):
+            for j in range(i+1, ndih):
                 if idihs[i] == list(reversed(idihs[j])):
                     save.remove(j)
         if removeImpropers == True:
@@ -138,8 +141,9 @@ class TMolecule:
                     flag1, flag2 = 0, 0 
         for s in save:
             dihedral = TDihedral()
-            dihedral.funcType = 1
+            dihedral.functionType = 1
             dihedral.atoms = [self.atomNumberToAtom(nr) for nr in idihs[s]]
+            self.dihedrals.append(dihedral)
         return
 
     def findImpropers(self) -> None:
@@ -159,7 +163,7 @@ class TMolecule:
                 iimps.append(iimp)
         for iimp in iimps:
             improper = TDihedral()
-            improper.funcType = 4
+            improper.functionType = 4
             improper.atoms = [self.atomNumberToAtom(nr) for nr in iimp]
             self.dihedrals.append(improper)
         return
@@ -172,7 +176,7 @@ class TMolecule:
             return
         for dih in mol.dihedrals:
             pair = TPair()
-            pair.funcType = 1
+            pair.functionType = 1
             pair.atoms = [dih.atoms[0], dih.atoms[1]]
             self.pairs.append(pair)
         return
@@ -191,8 +195,9 @@ class TMolecule:
                 row = str(rline).split()
                 natom = int(row[0])
                 nbond = int(row[1])
-            elif "@<TRIPOS>ATOM" in rline:
+            if "@<TRIPOS>ATOM" in rline:
                 j = 0
+                rline = f.readline()
                 while j < natom:
                     #      1 O           0.0000    0.0000    0.0000 O.3     1  UNL1        0.0000
                     atom = TAtom()
@@ -215,7 +220,8 @@ class TMolecule:
                     self.addAtom(atom)
                     rline = f.readline()
                     j += 1
-            elif "@<TRIPOS>BOND" in rline:
+            if "@<TRIPOS>BOND" in rline:
+                rline = f.readline()
                 j = 0
                 while j < nbond:
                     #     1    11     6    1
@@ -223,14 +229,14 @@ class TMolecule:
                     ibondss.append( [int(row[1]), int(row[2])] )
                     bondTypes.append(row[3])
                     j += 1
-                    rline = f.readline()          
+                    rline = f.readline()
             rline = f.readline()              
         f.close()
         for i, ibonds in enumerate(ibondss):
             bond = TBond()
-            bond.atoms = [self.atomNumberToAtom(atomNr) for atomNr in ibonds]
+            bond.atoms = [self.atomNumberToAtom(nr) for nr in ibonds]
             bond.mol2Type = bondTypes[i]
-            bond.funcType = 1
+            bond.functionType = 1
             self.bonds.append(bond)
         self.labelAtom()
         self.findAngles()
