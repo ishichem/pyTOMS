@@ -7,3 +7,4 @@ from .TAngle import TAngle
 from .TDihedral import TDihedral
 from .TPair import TPair
 from .utils import *
+from .TSystem import TSystem
